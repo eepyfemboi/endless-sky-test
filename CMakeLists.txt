@@ -151,7 +151,10 @@ elseif(APPLE)
 
 elseif(UNIX)
     # On Linux, link the .so file
-    target_link_libraries(EndlessSkyLib PUBLIC "/home/runner/work/endless-sky-test/endless-sky-test/discord_sdk/x86_64/discord_game_sdk.so")
+	# https://stackoverflow.com/questions/33165270/force-cmake-to-use-the-full-library-path
+	# https://github.com/eepyfemboi/endless-sky-test/actions/runs/11126853471/job/30917765856
+	cmake_policy(SET CMP0060 NEW)
+    target_link_libraries(EndlessSkyLib PUBLIC "${CMAKE_SOURCE_DIR}/discord_sdk/x86_64/discord_game_sdk.so")
 endif()
 
 # Link the needed OS-specific dependencies, if any.
