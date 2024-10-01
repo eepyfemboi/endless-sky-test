@@ -62,7 +62,6 @@ this program. If not, see <https://www.gnu.org/licenses/>.
 #include <thread>
 
 #ifdef _WIN32
-#define STRICT
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <mmsystem.h>
