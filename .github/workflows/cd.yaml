@@ -14,48 +14,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-
-  cd_appimage_x64:
-    name: Linux
-    runs-on: ubuntu-22.04
-    env:
-      OUTPUT: Endless_Sky-continuous-x86_64.AppImage
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          show-progress: false
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends libxmu-dev libxi-dev libgl-dev libglu1-mesa-dev libgles2-mesa-dev libwayland-dev libxkbcommon-dev libegl1-mesa-dev libfuse2
-      - name: Setup cached directories
-        uses: actions/cache@v4
-        with:
-          path: /home/runner/.cache/sccache
-          key: ${{ runner.os }}-cd-sccache-${{ github.ref }}
-          restore-keys: |
-            ${{ runner.os }}-cd-sccache-refs/heads/master
-      - name: Setup sccache
-        uses: Mozilla-Actions/sccache-action@v0.0.5
-      - name: Adjust version strings
-        run: ./utils/cd_update_versions.sh
-      - uses: lukka/get-cmake@latest
-      - uses: lukka/run-vcpkg@v11
-        with:
-          vcpkgGitCommitId: '2cf957350da28ad032178a974607f59f961217d9'
-      - uses: lukka/run-cmake@v10
-        with:
-          configurePreset: 'linux-release'
-          buildPreset: 'linux-ci-release'
-      - name: Package Application
-        run: ./utils/build_appimage.sh build/release
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.OUTPUT }}
-          path: ${{ env.OUTPUT }}
-
   cd_windows_x64:
     name: Windows
     runs-on: windows-2022
@@ -140,12 +98,10 @@ jobs:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     needs:
-      - cd_appimage_x64
       - cd_windows_x64
       - cd_macos_x64
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      OUTPUT_APPIMAGE: Endless_Sky-continuous-x86_64.AppImage
       OUTPUT_WINDOWS: EndlessSky-win64-continuous.zip
       OUTPUT_MACOS: EndlessSky-macOS-continuous.zip
     steps:
@@ -189,14 +145,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: ${{ github.workspace }} # This will download all files to e.g `./EndlessSky-win64.zip/EndlessSky-win64.zip`
-      - name: Add ${{ env.OUTPUT_APPIMAGE }} to release tag
-        continue-on-error: true
-        run: |
-          github-release upload \
-            --tag continuous \
-            --replace \
-            --name ${{ env.OUTPUT_APPIMAGE }} \
-            --file ${{ env.OUTPUT_APPIMAGE }}/${{ env.OUTPUT_APPIMAGE }}
       - name: Add ${{ env.OUTPUT_WINDOWS }} to release tag
         continue-on-error: true
         run: |
