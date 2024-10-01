@@ -151,7 +151,7 @@ elseif(APPLE)
 
 elseif(UNIX)
     # On Linux, link the .so file
-    target_link_libraries(EndlessSkyLib PUBLIC "discord_sdk/x86_64/discord_game_sdk.so")
+    target_link_libraries(EndlessSkyLib PUBLIC "/home/runner/work/endless-sky-test/endless-sky-test/discord_sdk/x86_64/discord_game_sdk.so")
 endif()
 
 # Link the needed OS-specific dependencies, if any.
