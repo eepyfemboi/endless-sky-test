@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16...3.29)
+cmake_minimum_required(VERSION 3.19...3.29)
 
 include(CMakeDependentOption)
 if(UNIX AND NOT APPLE AND NOT ES_STEAM)
@@ -151,7 +151,7 @@ elseif(APPLE)
 
 elseif(UNIX)
     # On Linux, link the .so file
-    target_link_libraries(EndlessSkyLib PUBLIC "${CMAKE_SOURCE_DIR}/discord_sdk/x86_64/discord_game_sdk.so")
+    target_link_libraries(EndlessSkyLib PUBLIC "discord_sdk/x86_64/discord_game_sdk.so")
 endif()
 
 # Link the needed OS-specific dependencies, if any.
