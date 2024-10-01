@@ -389,6 +389,8 @@ target_sources(EndlessSkyLib PRIVATE
 	text/alignment.hpp
 	text/layout.hpp
 	text/truncate.hpp
+	discord_game_sdk/types.cpp
+	discord_game_sdk/types.h
 	discord_game_sdk/achievement_manager.cpp
 	discord_game_sdk/achievement_manager.h
 	discord_game_sdk/activity_manager.cpp
@@ -414,8 +416,6 @@ target_sources(EndlessSkyLib PRIVATE
 	discord_game_sdk/storage_manager.h
 	discord_game_sdk/store_manager.cpp
 	discord_game_sdk/store_manager.h
-	discord_game_sdk/types.cpp
-	discord_game_sdk/types.h
 	discord_game_sdk/user_manager.cpp
 	discord_game_sdk/user_manager.h
 	discord_game_sdk/voice_manager.cpp
